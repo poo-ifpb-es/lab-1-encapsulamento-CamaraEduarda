@@ -39,7 +39,8 @@ public class CarroAlugel {
             this.sinistro = sinistro;
         }
     
-    public float getDebito() {
+    public float getDebito(int valorPorKm, int distanciaPercorrida) {
+        int debito = valorPorKm*distanciaPercorrida;
         return debito;
     }
 
@@ -58,6 +59,13 @@ public class CarroAlugel {
     public void Devolver() throws CarroDisponivelException {
         if (!disponivel) {
             throw new CarroDisponivelException("Não pode ser disponível");
+            
+        }
+        if (debito != 0) {
+            if (sinistro != false && (DistanciaPercorrida != 0)) {
+                throw new CarroNaoPagoException("O carro não foi pago");
+   
+            }
             
         }
         disponivel = true;
