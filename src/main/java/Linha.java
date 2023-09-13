@@ -1,6 +1,6 @@
 public class Linha {
-    Ponto inicio;
-    Ponto fim;
+    private Ponto inicio;
+    private Ponto fim;
 
 
     public Ponto getInicio() {
@@ -22,7 +22,9 @@ public class Linha {
     }
 
     public double getComprimento(){
-        comprimento
+        double x = (fim.getX()-inicio.getX());
+        double y = (fim.getY()-inicio.getY());
+        double comprimento = (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)));
         return comprimento;
     }
 

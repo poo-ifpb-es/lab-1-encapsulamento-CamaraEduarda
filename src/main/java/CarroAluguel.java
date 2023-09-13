@@ -1,13 +1,13 @@
 public class CarroAluguel {
 
     float valorPorKm;
-    int DistanciaPercorrida;
+    float DistanciaPercorrida;
     boolean disponivel;
     boolean sinistro;
     float debito;
+    
 
-
-   
+    //getters e setters
 
     public float getValorPorKm() {
         return valorPorKm;
@@ -17,59 +17,100 @@ public class CarroAluguel {
         this.valorPorKm = valorPorKm;
     }
 
-
-    public int getDistanciaPercorrida() {
+    public float getDistanciaPercorrida() {
         return DistanciaPercorrida;
     }
+         
 
-    public void setDistanciaPercorrida(int distanciaPercorrida) {
+    public void setDistanciaPercorrida(float distanciaPercorrida) {
         DistanciaPercorrida = distanciaPercorrida;
     }
 
-
-    public boolean isDisponivel(){
-        return disponivel;
-    }
-
-    public boolean hasSinistro(){
+       public boolean hasSinistro(){
         return sinistro;
     }
 
     public void setSinistro(boolean sinistro) {
             this.sinistro = sinistro;
-        }
-    
-    public float getDebito(int valorPorKm, int distanciaPercorrida) {
-        int debito = valorPorKm*distanciaPercorrida;
-        return debito;
     }
+
+    public float getDebito() {
+        float debito = valorPorKm*DistanciaPercorrida;
+        return debito;
+
+        }
 
     public void setDebito(float debito) {
         this.debito = debito;
     }
 
-    public void Alugar() throws CarroIndisponivelException{
-        if (!disponivel) {
-            throw new CarroIndisponivelException("Indisponível");
-            
-        }
-        disponivel= false;
+    //Disponivel e Sinistro
+
+    public boolean isDisponivel(){
+        return disponivel;
     }
 
-    public void Devolver() throws CarroDisponivelException {
-        if (!disponivel) {
-            throw new CarroDisponivelException("Não pode ser disponível");
-            
-        }
-        if (debito != 0) {
-            if (sinistro != false && (DistanciaPercorrida != 0)) {
-                throw new CarroNaoPagoException("O carro não foi pago");
-   
-            }
-            
-        }
-        disponivel = true;
 
+    
+    //construtor
+
+    public CarroAluguel(float valorPorKm) {
+        this.valorPorKm = valorPorKm;
+        this.DistanciaPercorrida = 0;
+        this.disponivel = true;
+        this.debito = 0;
+        this.sinistro = false;
+
+    }
+    //Excecoes
+
+    public void alugar() throws CarroIndisponivelException{
+        if (!disponivel) {
+            throw new CarroIndisponivelException();
+        }
+        disponivel = false;
+    }
+
+    public void devolver() throws CarroDisponivelException, CarroNaoPagoException {
+        if (disponivel) {
+            throw new CarroDisponivelException();  
+        }
+       
+        if (sinistro != false && (DistanciaPercorrida == 0)) {
+        }
+            
+        sinistro = false;
+
+        if (DistanciaPercorrida != 0) {
+            throw new CarroNaoPagoException();
+        }
+
+        if (sinistro != false) {
+            debito = ((debito*60)/100) + debito;
+        }
+        sinistro = false;
+
+        if (!disponivel) {
+            throw new CarroDisponivelException();
+        }
+        disponivel = false;
+
+    }
+
+    public void pagar() throws CarroDisponivelException {
+        
+        if (DistanciaPercorrida == 0) {
+            debito = 0;
+        }
+        if (sinistro != false) {
+            debito = ((debito*60)/100) + debito;
+        }
+        sinistro = false;
+
+        if (!disponivel) {
+            throw new CarroDisponivelException();
+        }
+        disponivel = false;
     }
 }
 
